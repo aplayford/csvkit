@@ -52,6 +52,7 @@ class UnicodeCSVReader(object):
             else:
                 if self.skip_errors:
                     self.errors += 1
+                    return None
                 else:
                     raise e
 
