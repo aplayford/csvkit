@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+    #!/usr/bin/env python
 
 """
 This module contains unicode aware replacements for :func:`csv.reader` and :func:`csv.writer`. The implementations are largely copied from `examples in the csv module documentation <http://docs.python.org/library/csv.html#examples>`_.
@@ -52,7 +52,7 @@ class UnicodeCSVReader(object):
             else:
                 if self.skip_errors:
                     self.errors += 1
-                    return None
+                    return []
                 else:
                     raise e
 
