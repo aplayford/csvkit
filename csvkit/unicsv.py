@@ -30,10 +30,14 @@ class UnicodeCSVReader(object):
     """
     A CSV reader which will read rows from a file in a given encoding.
     """
-    def __init__(self, f, encoding='utf-8', maxfieldsize=None, **kwargs):
+    def __init__(self, f, encoding='utf-8', maxfieldsize=None,
+                 skip_errors=None, **kwargs):
         f = UTF8Recoder(f, encoding)
         
         self.reader = csv.reader(f, **kwargs)
+        self.skip_errors = skip_errors
+        if skip_errors:
+            self.errors = 0
 
         if maxfieldsize:
             csv.field_size_limit(maxfieldsize)
@@ -46,7 +50,10 @@ class UnicodeCSVReader(object):
             if fnmatch.fnmatch(str(e), 'field large[rt] than field limit *'):
                 raise FieldSizeLimitError(csv.field_size_limit())
             else:
-                raise e
+                if self.skip_errors:
+                    self.errors += 1
+                else:
+                    raise e
 
         return [unicode(s, 'utf-8') for s in row]
 
